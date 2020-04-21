@@ -1,15 +1,7 @@
 import { all } from 'redux-saga/effects';
-import createSagaMiddleware from 'redux-saga';
-import { applyMiddleware, createStore } from 'redux';
 
-import { actionWatcher } from './repositories/saga';
-import rootReducer from './rootReducer';
+import { repositoriesWatcher } from './repositories/saga';
 
-const sagaMiddleware = createSagaMiddleware();
-
-function* rootSaga() {
-  yield all([actionWatcher()]);
+export function* rootSaga() {
+  yield all([repositoriesWatcher()]);
 }
-
-export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
-sagaMiddleware.run(rootSaga);

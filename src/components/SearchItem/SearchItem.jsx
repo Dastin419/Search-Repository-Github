@@ -4,19 +4,20 @@ import { Form, Button } from 'antd';
 
 import { getRepositories } from '../../store/repositories/actions';
 import { StyledInput, Title, Wrapper } from './StyledItem';
+import { selectSearchRepositoriesIsLoading } from '../../store/repositories/selectors';
 
 const SearchItem = () => {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState(null);
-  const isLoading = useSelector(state => state.searchRepositoriesReducer.isLoading);
+  const isLoading = useSelector(selectSearchRepositoriesIsLoading);
 
-  const onFormSubmit = e => {
-    e.preventDefault();
+  const onFormSubmit = event => {
+    event.preventDefault();
     dispatch(getRepositories({ searchValue }));
   };
 
-  const onInputChange = e => {
-    setSearchValue(e.target.value);
+  const onInputChange = event => {
+    setSearchValue(event.target.value);
   };
 
   return (

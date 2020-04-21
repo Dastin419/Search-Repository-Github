@@ -1,32 +1,38 @@
 import { put, takeLatest, call } from 'redux-saga/effects';
-import memoizee from 'memoizee';
 import { message } from 'antd';
 
 import constants from '../../constants';
 import types from './types';
-import { getAPICall } from '../../api';
-
-const getRepositoriesCallOptimised = memoizee(getAPICall, {
-  primitive: true,
-});
+import { getRepositoriesSuccess, getRepositoriesFailed } from './actions';
+import { repositoriesTransformFromServer } from './transforms';
+import { getRepositories } from '../../api';
 
 function* fetchRepositories({ payload }) {
-  const url = `${constants.SERVER_URL}/search/repositories?q=${payload.searchValue}&sort=stars&page=${payload.currentPage}`;
-  const { data, status } = yield call(getRepositoriesCallOptimised, url);
+  try {
+    const params = {
+      q: payload.searchValue,
+      sort: 'stars',
+      page: payload.currentPage,
+    };
+    const searchParams = new URLSearchParams(params);
 
-  if (status < 400) {
-    yield put({
-      type: types.REPOSITORIES_RECEIVED_SUCCESS,
-      payload: {
-        repositories: data.items,
-        totalCount: data.total_count,
-      },
-    });
-  } else {
-    message.error('Error fetch data');
+    const url = `${constants.SERVER_URL}/search/repositories?${searchParams.toString()}`;
+
+    const { data, status } = yield call(getRepositories, url);
+
+    if (status < 400) {
+      const repositories = repositoriesTransformFromServer(data.items);
+
+      yield put(getRepositoriesSuccess(repositories, data.total_count));
+    } else {
+      message.error('Error fetch data');
+    }
+  } catch (error) {
+    message.error(error);
+    yield put(getRepositoriesFailed());
   }
 }
 
-export function* actionWatcher() {
+export function* repositoriesWatcher() {
   yield takeLatest(types.GET_REPOSITORIES, fetchRepositories);
 }

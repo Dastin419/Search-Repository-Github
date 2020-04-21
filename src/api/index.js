@@ -1,3 +1,3 @@
-import axios from 'axios';
+import request from '../request';
 
-export const getAPICall = url => axios.get(url);
+export const getRepositories = url => request.get(url);

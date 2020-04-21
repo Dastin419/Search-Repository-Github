@@ -1,52 +1,45 @@
 import React from 'react';
 import { message } from 'antd';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getRepositories } from '../../store/repositories/actions';
 import { columns } from './columnsTable';
 import { StyledTable } from './StyledRepositories';
+import { selectSearchRepositories } from '../../store/repositories/selectors';
 
 const Repositories = () => {
   const dispatch = useDispatch();
-  const selectedData = useSelector(
-    state => state.searchRepositoriesReducer,
-    shallowEqual,
-  );
-
-  const data = selectedData.repositories.map(item => ({
-    fullName: item.full_name,
-    stars: item.stargazers_count,
-    ownerLogin: item.owner.login,
-    issuesCount: item.open_issues,
-    repositoryUrl: item.html_url,
-  }));
+  const searchRepositories = useSelector(selectSearchRepositories);
 
   const onChangePage = pagination => {
     dispatch(
       getRepositories({
-        searchValue: selectedData.searchValue,
+        searchValue: searchRepositories.searchValue,
         currentPage: pagination.current,
       }),
     );
   };
 
-  if (selectedData.totalCount) {
+  if (searchRepositories.totalCount) {
     return (
       <StyledTable
-        loading={selectedData.isLoading}
+        loading={searchRepositories.isLoading}
         columns={columns}
-        dataSource={data}
+        dataSource={searchRepositories.repositories}
         onChange={pagination => onChangePage(pagination)}
         pagination={{
           pageSize: 30,
-          total: selectedData.totalCount > 1000 ? 1000 : selectedData.totalCount,
+          total:
+            searchRepositories.totalCount > 1000 ? 1000 : searchRepositories.totalCount,
         }}
       />
     );
   }
-  if (selectedData.totalCount === 0) {
+
+  if (searchRepositories.totalCount === 0) {
     message.warning('no matching results found');
   }
+
   return null;
 };
 
