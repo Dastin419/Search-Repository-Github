@@ -2,29 +2,33 @@ import React from 'react';
 
 export const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: 'Full Name',
+    dataIndex: 'fullName',
+    key: 'fullName',
+    align: 'center',
   },
   {
     title: 'Stars',
     dataIndex: 'stars',
     key: 'stars',
+    align: 'center',
   },
   {
-    title: 'Owner',
-    dataIndex: 'owner',
-    key: 'owner',
+    title: 'Owner Login',
+    dataIndex: 'ownerLogin',
+    key: 'ownerLogin',
+    align: 'center',
   },
   {
-    title: 'Issue',
-    dataIndex: 'issue',
-    key: 'issue',
+    title: 'Issues Count',
+    dataIndex: 'issuesCount',
+    key: 'issuesCount',
+    align: 'center',
   },
   {
-    title: 'Repository',
-    dataIndex: 'repository',
-    key: 'repository',
+    title: 'Repository Url',
+    dataIndex: 'repositoryUrl',
+    key: 'repositoryUrl',
     render: repository => (
       <a href={repository} rel="noopener noreferrer" target="_blank">
         {repository}

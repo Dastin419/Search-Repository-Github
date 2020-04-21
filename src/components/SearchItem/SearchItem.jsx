@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Button } from 'antd';
 
-import { getRepositories } from '../../store/actions';
+import { getRepositories } from '../../store/repositories/actions';
 import { StyledInput, Title, Wrapper } from './StyledItem';
 
 const SearchItem = () => {

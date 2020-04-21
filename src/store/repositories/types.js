@@ -1,4 +1,6 @@
-export const types = {
+const types = {
   REPOSITORIES_RECEIVED_SUCCESS: 'REPOSITORIES_RECEIVED_SUCCESS',
   GET_REPOSITORIES: 'GET_REPOSITORIES',
 };
+
+export default types;
