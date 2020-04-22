@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Table } from 'antd';
 
 export const StyledTable = styled(Table)`
-  padding: 30px 50px 50px 50px;
+  padding: 30px 50px 50px;
 
   &&& {
     background: white;

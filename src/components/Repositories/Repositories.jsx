@@ -23,6 +23,7 @@ const Repositories = () => {
   if (searchRepositories.totalCount) {
     return (
       <StyledTable
+        rowKey={record => record.ownerLogin}
         loading={searchRepositories.isLoading}
         columns={columns}
         dataSource={searchRepositories.repositories}
